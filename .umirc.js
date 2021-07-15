@@ -1,26 +1,26 @@
 // ref: https://umijs.org/config/
 export default {
   treeShaking: true,
-  // routes: [
-  //   {
-  //     path: '/',
-  //     component: '../layouts/index',
-  //     routes: [
-  //       {
-  //         path: '/demo',
-  //         component: './demo',
-  //       },
-  //       {
-  //         path: '/class/index',
-  //         component: './class/index',
-  //       },
-  //       {
-  //         path: '/',
-  //         component: '../pages/index',
-  //       },
-  //     ],
-  //   },
-  // ],
+  routes: [
+    {
+      path: '/',
+      component: '../layouts/index',
+      routes: [
+        {
+          path: '/',
+          component: './home/index',
+        },
+        {
+          path: '/user',
+          component: './user/index',
+        },
+        {
+          path: '/order',
+          component: './order/index',
+        },
+      ],
+    },
+  ],
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     [
@@ -37,4 +37,7 @@ export default {
       },
     ],
   ],
+  cssLoaderOptions: {
+    localIdentName:'[local]', 
+  }
 };

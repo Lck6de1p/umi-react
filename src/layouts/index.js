@@ -1,10 +1,14 @@
-import styles from './index.css';
-import ErrorBoundary from '../components/ErrorBoundary';
-
+import {ErrorBoundary, MenuBar} from '@/components';
 function BasicLayout(props) {
+  const pathname = window.location.pathname
+  const paths = ['/', '/order', '/user']
+
   return (
-    <div className={styles.normal}>
-      <h1 className={styles.title}>Yay! Welcome to umi!</h1>
+    <div>
+      <MenuBar 
+      show={paths.includes(pathname)}
+      pathname={pathname}
+      />
       <ErrorBoundary>
         {props.children}
       </ErrorBoundary>
