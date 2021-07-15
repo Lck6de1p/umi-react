@@ -9,14 +9,22 @@ export default {
         {
           path: '/',
           component: './home/index',
+          title: '首页'
         },
         {
           path: '/user',
           component: './user/index',
+          title: '我的'
         },
         {
           path: '/order',
           component: './order/index',
+          title: '订单'
+        },
+        {
+          path: '/search',
+          component: './search/index',
+          title: '搜索'
         },
       ],
     },
