@@ -16,6 +16,7 @@ export default function (props) {
   const [houses, housesLoading] = useHttpHook({
     url: '/house/hot'
   })
+  
   useEffect(() => {
 
   }, [])
