@@ -16,5 +16,5 @@ export default function useObserverHook(ele, callback, watch = []) {
                 observer.disconnect();
             }
         }
-    }, [callback, ele])
+    }, watch)
 }
