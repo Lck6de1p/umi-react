@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { router } from 'umi';
 import { useObserverHook } from '@/hooks';
 
-let observer;
 export default function(props){
-  const [state, setState] = useState()
 
   const handleClick = () => {
       router.push('/')
