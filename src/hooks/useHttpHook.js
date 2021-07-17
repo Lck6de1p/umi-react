@@ -55,6 +55,5 @@ export default function useHttpHook({
     useEffect(()=>{
         Http();
     }, watch)
-
     return [result, loading]
 }
