@@ -1,6 +1,6 @@
 import { node } from 'prop-types';
 import { useEffect } from 'react';
-
+import { isEmpty } from 'project-libs';
 /**
  * 1、监听图片是否进入可视区域
  * 2、将src属性的值替换为真实的图片地址，data-src
@@ -15,8 +15,7 @@ export default function(ele, callback, watch = []) {
   useEffect(() => {
   
     const nodes = document.querySelectorAll(ele);
-    console.log(nodes)
-    if (nodes && nodes.length) {
+    if (!isEmpty(nodes)) {
       observer = new IntersectionObserver((entries) => {
         callback && callback(entries);
         entries.forEach(item => {
@@ -33,7 +32,7 @@ export default function(ele, callback, watch = []) {
     }
 
     return () => {
-      if (nodes && node.length && observer) {
+      if (!isEmpty(nodes) && observer) {
         observer.disconnect();
       }
     }

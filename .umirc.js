@@ -31,6 +31,11 @@ export default {
           component: './observer',
           title: 'observer'
         },
+        {
+          path: '/house',
+          component: './house',
+          title: '详情'
+        },
       ],
     },
   ],

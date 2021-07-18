@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { SearchBar, ActivityIndicator } from 'antd-mobile';
 import { useHttpHook, useObserverHook, useImgHook } from '@/hooks';
 import './index.less';
+import { ShowLoading } from '@/components';
+import { CommonEnum } from '@/enums';
 
 
 const query = {
@@ -12,13 +14,7 @@ const query = {
 
 export default function (props) {
     const [houseName, setHouseName] = useState('')
-    const [pageConf, setPageConf] = useState({
-        pageSize: 8,
-        pageNum: 1,
-        code: query?.code,
-        startTime: query?.startTime + '00:00:00',
-        endTime: query?.code + '23:59:59',
-    });
+    const [pageConf, setPageConf] = useState(CommonEnum.PAGE);
     const [houseLists, setHouseLists] = useState([]);
     const [showLoading, setShowLoading] = useState(true);
     const [houseSubmitName, setSouseSubmitName] = useState('');
@@ -26,12 +22,14 @@ export default function (props) {
         url: '/house/search',
         body: {
             ...pageConf,
-            houseName
+            houseName,
+            code: query?.code,
+            startTime: query?.startTime + '00:00:00',
+            endTime: query?.code + '23:59:59',
         },
         watch: [pageConf.pageNum, houseSubmitName]
     })
-
-    useObserverHook("#loading", (enteries) => {
+    useObserverHook('#' + CommonEnum.LOADING_ID, (enteries) => {
         if (!loading && enteries[0].isIntersecting) {
             setPageConf({
                 ...pageConf,
@@ -48,12 +46,10 @@ export default function (props) {
 
     const _setSearch = (value) => {
         setSouseSubmitName(value);
-        setPageConf({
-            pageSize: 8,
-            pageNum: 1
-        })
+        setPageConf(CommonEnum.PAGE)
         setHouseLists([])
     }
+    
     const handleCancel = () => {
         _setSearch('')
     }
@@ -103,7 +99,7 @@ export default function (props) {
                             </div>
                         </div>
                     ))}
-                     {showLoading ? <div id="loading">加载中...</div> : <div>到底了</div>}
+                    <ShowLoading showLoading={showLoading} />
                 </div>
                 }
                
