@@ -9,10 +9,13 @@
   },
   "dependencies": {
     "dayjs": "^1.10.6",
+    "project-libs": "^1.1.5",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-awesome-swiper": "^1.4.16",
     "react-dom": "^16.8.6",
-    "react-icons": "^4.2.0"
+    "react-icons": "^4.2.0",
+    "think-react-store": "^1.6.71"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",

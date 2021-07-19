@@ -1,87 +1,85 @@
 import React, { useState, useEffect } from 'react';
 import { SearchBar, ActivityIndicator } from 'antd-mobile';
-import { useHttpHook, useObserverHook } from '@/hooks';
+import { useHttpHook, useObserverHook, useImgHook } from '@/hooks';
 import './index.less';
+import { ShowLoading } from '@/components';
+import { CommonEnum } from '@/enums';
+
+const query = {
+    startTime: '2021-07-21',
+    endTime: '2021-07-29',
+    code: '10001'
+}
 
 const search = window.location.search.split('?').length == 2 ? window.location.search.split('?')[1].split('&') : []
-const query = {};
 search.forEach(item => {
     query[item.split("=")[0]] = item.split("=")[1]
 })
 
 export default function (props) {
-   
-    
+
+
     const [houseName, setHouseName] = useState('')
-    const [page, setPage] = useState({
-        pageSize: 8,
-        pageNum: 1
-    })
+    const [pageConf, setPageConf] = useState(CommonEnum.PAGE);
     const [houseLists, setHouseLists] = useState([]);
     const [showLoading, setShowLoading] = useState(true);
-    const [houseSubmitName, setHouseSubmitName] = useState("");
-
-
+    const [houseSubmitName, setSouseSubmitName] = useState('');
     const [houses, loading] = useHttpHook({
         url: '/house/search',
         body: {
-            ...page,
+            ...pageConf,
             houseName,
             code: query?.code,
-            startTime: query?.startTime+ '00:00:00',
-            endTime: query?.endTime+ '23:59:59',
-
+            startTime: query?.startTime + '00:00:00',
+            endTime: query?.code + '23:59:59',
         },
-        watch: [page.pageNum, houseSubmitName]
+        watch: [pageConf.pageNum, houseSubmitName]
     })
-    
-    /**
-     * 监听loading是否展示
-     * 修改分页数据
-     * 监听分页修改，发送接口，请求下页数据 
-     * 监听loading变化，拼装数据 
-     * */ 
-    useObserverHook("#loading", (entries) => {
-        if (!loading && entries[0].isIntersecting) {
-            setPage({
-                ...page,
-                pageNum: page.pageNum + 1
+    useObserverHook('#' + CommonEnum.LOADING_ID, (enteries) => {
+        if (!loading && enteries[0].isIntersecting) {
+            setPageConf({
+                ...pageConf,
+                pageNum: pageConf.pageNum + 1
             })
         }
     }, null)
+
+    useImgHook('.item-img', (entries) => { }, null);
+
     const handleChange = (value) => {
         setHouseName(value);
     }
-    const _handleSubmit = (value) => {
-        setHouseName(value)
-        setHouseSubmitName(value);
-        setPage({
-            pageSize: 8,
-            pageNum: 1
-        });
-        setHouseLists([]);
-    } 
-    const handleCancel = () => {
-        _handleSubmit('');
+
+    const _setSearch = (value) => {
+        setSouseSubmitName(value);
+        setPageConf(CommonEnum.PAGE)
+        setHouseLists([])
     }
+
+    const handleCancel = () => {
+        _setSearch('')
+    }
+
     const handleSubmit = (value) => {
-        _handleSubmit(value);
+        _setSearch(value)
     }
 
     useEffect(() => {
-        if (!loading && houses) {
+        if (!loading, houses) {
             if (houses.length) {
                 setHouseLists([
                     ...houseLists,
                     ...houses
                 ])
-                if (houses.length < page.pageSize) {
-                    setShowLoading(false);
+                if (houses.length < pageConf.pageSize) {
+                    setShowLoading(false)
+                } else {
+                    setShowLoading(true)
                 }
             } else {
-                setShowLoading(false);
+                setShowLoading(false)
             }
-        } 
+        }
     }, [loading])
 
     return (
@@ -98,18 +96,19 @@ export default function (props) {
             {!houseLists.length
                 ? <ActivityIndicator toast />
                 : <div className="result">
-                    {houseLists.map(item => (
-                        <div className="item" key={item.id}>
-                            <img alt="img" src={item.img} />
+                    {houseLists.map((item, index) => (
+                        <div className="item" key={index}>
+                            <img alt="img" className="item-img" src={require('../../assets/blank.png')} data-src={item.img} />
                             <div className="item-right">
                                 <div className="title">{item.title}</div>
                                 <div className="price">￥{item.price}</div>
                             </div>
                         </div>
                     ))}
-                    {showLoading ? <div id="loading">loading</div> : <div>没有数据了</div>}
-                    
-                </div>}
+                    <ShowLoading showLoading={showLoading} />
+                </div>
+            }
+
             {/*  */}
         </div>
     )
