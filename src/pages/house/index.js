@@ -8,9 +8,26 @@ import { useObserverHook } from '@/hooks';
 import { CommonEnum } from '@/enums';
 
 import './index.less'
+const query = {
+  id: ''
+}
+
+const search = window.location.search.split('?').length == 2 ? window.location.search.split('?')[1].split('&') : []
+search.forEach(item => {
+  query[item.split("=")[0]] = item.split("=")[1]
+})
 
 export default function House() {
-  const { house: { detail, getDetailAsync, getCommentsAsync } } = useStoreHook();
+  const { house: { detail, 
+    getDetailAsync, 
+    getCommentsAsync, 
+    comments, 
+    reloadComments,
+    reloadComentsNum,
+    showLoading,
+    resetData
+
+  } } = useStoreHook();
 
   /**
    * 1、监听loading是否展示
@@ -19,19 +36,29 @@ export default function House() {
    * 4、拼装
    */
   useObserverHook('#' + CommonEnum.LOADING_ID, (entries) => {
-    if (entries[0].isIntersecting) {
-
+    if (comments && comments.length && showLoading && entries[0].isIntersecting) {
+      reloadComments();
     }
-  }, null);
+  }, [comments, showLoading]);
 
   useEffect(()=>{
-    getDetailAsync({})
+    getDetailAsync({
+      id: query?.id
+    })
   }, [])
 
   useEffect(()=>{
     getCommentsAsync({
-      
+      id: query?.id
     })
+  }, [reloadComentsNum])
+
+  useEffect(()=>{
+    return () => {
+      resetData({
+        detail: {}
+      })
+    }
   }, [])
 
   return (
@@ -41,7 +68,7 @@ export default function House() {
       {/*房屋信息 */}
       <Info detail={detail?.info}/>
       {/*评论列表 */}
-      <Lists />
+      <Lists lists={comments} showLoading={showLoading}/>
       {/*footer  */}
       <Footer />
     </div>

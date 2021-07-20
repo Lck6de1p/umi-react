@@ -1,20 +1,33 @@
 
 import React, { useState } from 'react';
 import { Modal } from '@/components';
-import { TextareaItem, Button } from 'antd-mobile'
+import { TextareaItem, Button, Toast } from 'antd-mobile'
+import { useStoreHook } from 'think-react-store';
 
 export default function Footer() {
   const [show, setShow] = useState(false);
+  const [commentsValue, setCommentsValue] = useState('')
 
-
+  const { house: { addCommentsAsync } } = useStoreHook();
   const handleClick = () => {
     setShow(true)
   }
   const handleChange = (value) => {
-    console.log(value)
+    setCommentsValue(value)
   }
   const handleClose = () => {
     setShow(false)
+  }
+
+  const handleSubmit = () => {
+    if (commentsValue) {
+      addCommentsAsync({
+        comments: commentsValue
+      })
+      handleClose()
+    } else {
+      Toast.fail('请添加信息')
+    }
   }
   return (
     <>
@@ -29,13 +42,13 @@ export default function Footer() {
           top: "unset"
         }}
         onClose={handleClose}
-        >
+      >
         <div className="modal-comment">
           <TextareaItem
             rows={2}
             count={200}
             onChange={handleChange} />
-          <Button className="comment-btn" type="warning">评论</Button>
+          <Button className="comment-btn" type="warning" onClick={handleSubmit}>评论</Button>
         </div>
       </Modal>
     </>

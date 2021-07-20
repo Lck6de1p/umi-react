@@ -7,6 +7,7 @@ export default {
         comments: [],
         page: CommonEnum.PAGE,
         showLoading: true,
+        reloadComentsNum: 0,
     },
     reducers: {
         getDetail(state, payload) {
@@ -25,6 +26,26 @@ export default {
             return {
                 ...state,
                 showLoading: payload
+            }
+        },
+        reloadComments(state, payload) {
+            return {
+                ...state,
+                reloadComentsNum: state.reloadComentsNum + 1,
+                page: {
+                    ...CommonEnum.PAGE,
+                    pageNum: state.page.pageNum + 1
+                }
+            }
+        },
+        resetData(state, payload) {
+            return {
+                ...state,
+                comments: [],
+                page: CommonEnum.PAGE,
+                showLoading: true,
+                reloadComentsNum: state.reloadComentsNum + 1,
+                ...payload
             }
         }
     },
@@ -60,6 +81,18 @@ export default {
                 type: 'setShowLoading',
                 payload: lists.length ? true : false
             })
+        },
+        async addCommentsAsync(dispatch, rootState, payload) {
+            const result = await Http({
+                url: '/comments/add',
+                body: payload
+            })
+            if (result) {
+                dispatch({
+                    type: 'resetData',
+                    payload: {}
+                })
+            }
         }
     }
 }

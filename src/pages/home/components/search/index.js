@@ -3,10 +3,6 @@ import { Picker, List, Calendar, Button, Toast } from 'antd-mobile';
 import dayjs from 'dayjs';
 import { router } from 'umi'
 export default function (props) {
-    // const [citys, setCitys] = useState([[
-    //     { label: "杭州", value: "10001" },
-    //     { label: "苏州", value: "10002" },
-    // ]])
     const [selectedCity, setSelectedCity] = useState(['10001'])
     const [times, setTimes] = useState('可选时间')
     const [dateShow, setDateShow] = useState(false)
