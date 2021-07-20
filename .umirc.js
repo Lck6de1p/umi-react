@@ -17,6 +17,11 @@ export default {
           title: '我的'
         },
         {
+          path: '/user/edit',
+          component: './user/edit/index',
+          title: '设置用户'
+        },
+        {
           path: '/order',
           component: './order/index',
           title: '订单'
