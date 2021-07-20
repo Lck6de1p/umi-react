@@ -31,7 +31,6 @@ export default function Http({
         .then(res => res.json())
         .then(res => {
             if (res.status === 200) {
-                console.log('200')
                 resolve(res.data);
                 setResult && setResult(res.data);
             } else {

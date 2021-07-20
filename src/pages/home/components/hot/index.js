@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { router } from 'umi'
 
-export default function(props){
+function Hot(props){
 
   const handleClick = (id) => {
     router.push({
@@ -11,9 +11,6 @@ export default function(props){
       }
     })
   }
-  useEffect(() => {
-
-  }, [])
 
   return (
     <div className="hot">
@@ -32,3 +29,5 @@ export default function(props){
     </div>
   )
 }
+
+export default memo(Hot);

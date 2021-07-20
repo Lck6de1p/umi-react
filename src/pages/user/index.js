@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { List } from 'antd-mobile';
 import { router } from 'umi';
-
+import { useStoreHook } from 'think-react-store';
 
 import './index.less';
 
 export default function (props) {
+  const { user: { username, avatar, tel, sign, getUserAsync } } = useStoreHook();
   const [state, setState] = useState()
 
   const handleClick = () => {
@@ -18,7 +19,9 @@ export default function (props) {
   }
 
   useEffect(() => {
-
+    getUserAsync({
+      id: 10
+    })
   }, [])
 
   return (
@@ -27,9 +30,9 @@ export default function (props) {
       <div className="info">
         <div className="set" onClick={handleClick}>设置</div>
         <div className="user">
-          <img alt="user" src={''} />
-          <div className="tel">{'tel'}</div>
-          <div className="sign">{'sign'}</div>
+          <img alt="user" src={avatar} />
+          <div className="tel">{tel}</div>
+          <div className="sign">{sign}</div>
         </div>
       </div>
       {/* 列表 */}

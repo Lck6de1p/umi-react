@@ -14,7 +14,8 @@ export default {
         {
           path: '/user',
           component: './user/index',
-          title: '我的'
+          title: '我的',
+          auth: true
         },
         {
           path: '/user/edit',
@@ -24,7 +25,8 @@ export default {
         {
           path: '/order',
           component: './order/index',
-          title: '订单'
+          title: '订单',
+          auth: true
         },
         {
           path: '/search',
@@ -40,6 +42,16 @@ export default {
           path: '/house',
           component: './house',
           title: '详情'
+        },
+        {
+          path: '/login',
+          component: './login',
+          title: '登录'
+        },
+        {
+          path: '/register',
+          component: './register',
+          title: '注册'
         },
       ],
     },

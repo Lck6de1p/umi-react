@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Picker, List, Calendar, Button, Toast } from 'antd-mobile';
 import dayjs from 'dayjs';
 import { router } from 'umi'
-export default function (props) {
+
+function Search(props) {
+    console.log('Search render')
     const [selectedCity, setSelectedCity] = useState(['10001'])
     const [times, setTimes] = useState('可选时间')
     const [dateShow, setDateShow] = useState(false)
@@ -72,3 +74,12 @@ export default function (props) {
         </div>
     )
 }
+
+function areEqual(prevProps, nextProps) {
+    if (prevProps.citys === nextProps.citys && prevProps.citysLoading === nextProps.citysLoading) {
+        return true
+    } else {
+        return false
+    }
+}
+export default memo(Search, areEqual);

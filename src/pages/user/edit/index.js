@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { List, ImagePicker, Toast, InputItem, Button } from 'antd-mobile';
 import { createForm } from 'rc-form';
+import { useStoreHook } from 'think-react-store';
 
 function Edit(props) {
   const [files, setFiles] = useState([])
+  const { user: { editUserAsync } } = useStoreHook();
   const { getFieldProps, validateFields } = props.form;
   const handleChange = file => {
     if (file[0]?.file?.size / 1024 / 1024 > 0.1) {
@@ -20,7 +22,11 @@ function Edit(props) {
       if (err) {
         return Toast.fail('请将信息补充完整')
       } else {
-
+        editUserAsync({
+          img: files[0].url,
+          tel: val.tel,
+          sign: val.sign
+        })
       }
     });
   }
@@ -38,20 +44,20 @@ function Edit(props) {
         </List.Item>
         <List.Item>
           <InputItem
-          {...getFieldProps('tel', {
-            rules: [{require: true}],
-            initialValue: '123456'
-          })}
+            {...getFieldProps('tel', {
+              rules: [{ require: true }],
+              initialValue: '123456'
+            })}
             placeholder="电话">
             电话：
           </InputItem>
           <InputItem
-           {...getFieldProps('sign', {
-            rules: [{require: true}],
-            initialValue: '签名'
-          })}
+            {...getFieldProps('sign', {
+              rules: [{ require: true }],
+              initialValue: '签名'
+            })}
             placeholder="签名"
-            >
+          >
             签名：
           </InputItem>
         </List.Item>
