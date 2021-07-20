@@ -22,9 +22,9 @@ export default function index(props) {
             </div>
           </div>
         ))}
-         <ShowLoading showLoading={props?.showLoading} />
+        <ShowLoading showLoading={props?.showLoading} />
       </div>
-     
+
     </div>
   )
 }
