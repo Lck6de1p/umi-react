@@ -3,7 +3,7 @@ import { Link } from 'umi'
 import {cookie} from 'project-libs';
 
 function Header(props){
-  console.log('header render')
+  const [username, setUsername] = useState(localStorage.getItem('username'))
 
   useEffect(() => {
 
@@ -13,7 +13,7 @@ function Header(props){
     <div className='header'>
         <div className="header_title">名宿</div>
         <div className="header_login">
-          {cookie.get('user') ? cookie.get('user').username : <><Link to="/login">登录</Link> | <Link to="/rejister">注册</Link></>}
+          {username ? username : <><Link to="/login">登录</Link> | <Link to="/rejister">注册</Link></>}
             
         </div>
     </div>

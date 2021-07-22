@@ -54,9 +54,11 @@ export default {
                 body: payload
             });
             if (result) {
-                cookie.set('user', result);
+                // cookie.set('user', result);
+                localStorage.setItem('token', result.token);
+                localStorage.setItem('username', result.username);
                 Toast.success('登录成功！')
-                router.push(urlGet('from'))
+                urlGet('from') && router.push(urlGet('from'))
             }
         },
         async registerAsync(dispatch, rootState, payload) {
@@ -65,8 +67,20 @@ export default {
                 body: payload
             });
             if (result) {
+                localStorage.setItem('token', result.token);
+                localStorage.setItem('username', result.username);
                 Toast.success('注册成功！')
             }
+        },
+        async logoutAsync(dispatch, rootState, payload) {
+            await Http({
+                url: '/user/logout',
+                body: payload
+            });
+            Toast.success('退出登录成功');
+            localStorage.clear();
+            router.push('/login?from=' + window.location.pathname)
+
         }
     }
 }

@@ -4,16 +4,21 @@ import { Toast } from 'antd-mobile';
 export default function Http({
     url,
     method = 'post',
-    headers,
+    headers = {},
     body = {},
     setLoading,
     setResult
 }) {
     setLoading && setLoading(true);
+    const token = localStorage.getItem('token');
 
-    const defaultHeader = {
+    let defaultHeader = {
         'Content-type': 'application/json'
     };
+    defaultHeader = token ? {
+        ...defaultHeader,
+        token
+    } : defaultHeader;
 
     let params;
     if (method.toUpperCase() === 'GET') {
@@ -34,6 +39,10 @@ export default function Http({
                 resolve(res.data);
                 setResult && setResult(res.data);
             } else {
+                if (res.status === 1001) {
+                    window.location.href = '/login?from=' + window.location.pathname;
+                    localStorage.clear(); 
+                }
                 Toast.fail(res.errMsg);
                 reject(res.errMsg);
             }
