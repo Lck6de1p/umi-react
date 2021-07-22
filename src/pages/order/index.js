@@ -5,6 +5,7 @@ import { useObserverHook } from '@/hooks';
 import { CommonEnum } from '@/enums';
 import { Http } from '@/utils';
 import { isEmpty } from 'project-libs';
+import { ErrorBoundary } from '@/components';
 
 import './index.less';
 
@@ -70,7 +71,7 @@ export default function (props) {
   }, [type])
 
   return (
-    <div>
+    <ErrorBoundary>
       <div className="order-page">
         <Tabs
           tabs={tabs}
@@ -83,6 +84,6 @@ export default function (props) {
           </div>
         </Tabs>
       </div>
-    </div>
+    </ErrorBoundary>
   )
 }

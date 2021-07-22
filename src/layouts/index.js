@@ -1,4 +1,4 @@
-import {ErrorBoundary, MenuBar} from '@/components';
+import { MenuBar} from '@/components';
 import { StoreProvider } from 'think-react-store';
 import * as store from '../stores';
 function BasicLayout(props) {
@@ -11,9 +11,7 @@ function BasicLayout(props) {
       show={paths.includes(pathname)}
       pathname={pathname}
       />
-      <ErrorBoundary>
-        {props.children}
-      </ErrorBoundary>
+      {props.children}
     </StoreProvider>
   );
 }
