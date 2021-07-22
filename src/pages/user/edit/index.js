@@ -4,9 +4,10 @@ import { createForm } from 'rc-form';
 import { useStoreHook } from 'think-react-store';
 
 function Edit(props) {
-  const [files, setFiles] = useState([])
-  const { user: { editUserAsync } } = useStoreHook();
+ 
+  const { user: { editUserAsync, getUserAsync, avatar, phone, sign } } = useStoreHook();
   const { getFieldProps, validateFields } = props.form;
+  const [files, setFiles] = useState([{url: avatar}])
   const handleChange = file => {
     if (file[0]?.file?.size / 1024 / 1024 > 0.1) {
       return Toast.fail('图片大小不能大于0.1M');
@@ -23,30 +24,31 @@ function Edit(props) {
         return Toast.fail('请将信息补充完整')
       } else {
         editUserAsync({
-          img: files[0].url,
-          tel: val.tel,
+          avatar: files[0].url,
+          phone: val.phone,
           sign: val.sign
         })
       }
     });
   }
 
+  useEffect(()=>{
+    getUserAsync({});
+  }, [])
 
   return (
     <div className="user-edit">
       <List>
-        <List.Item>
+       
           <ImagePicker
             files={files}
             selectable={files.length < 1}
             onChange={handleChange}
           />
-        </List.Item>
-        <List.Item>
           <InputItem
-            {...getFieldProps('tel', {
+            {...getFieldProps('phone', {
               rules: [{ require: true }],
-              initialValue: '123456'
+              initialValue: phone
             })}
             placeholder="电话">
             电话：
@@ -54,13 +56,13 @@ function Edit(props) {
           <InputItem
             {...getFieldProps('sign', {
               rules: [{ require: true }],
-              initialValue: '签名'
+              initialValue: 'sign'
             })}
             placeholder="签名"
           >
             签名：
           </InputItem>
-        </List.Item>
+       
       </List>
       <Button type="warning" style={{ marginTop: '20px' }} onClick={handleSubmit}>修改</Button>
     </div>
