@@ -18,16 +18,32 @@ search.forEach(item => {
 })
 
 export default function House() {
-  const { house: { detail, 
-    getDetailAsync, 
-    getCommentsAsync, 
-    comments, 
+  const { house: { detail,
+    getDetailAsync,
+    getCommentsAsync,
+    comments,
     reloadComments,
     reloadComentsNum,
     showLoading,
-    resetData
+    resetData,
+    order,
+    hasOrderAsync,
+    addOrderAsync,
+    delOrderAsync
 
   } } = useStoreHook();
+
+  const handleBtnClick = (id) => {
+    if (!id) {
+      addOrderAsync({
+        id: query?.id
+      })
+    } else {
+      delOrderAsync({
+        id: query?.id
+      })
+    }
+  }
 
   /**
    * 1、监听loading是否展示
@@ -41,19 +57,19 @@ export default function House() {
     }
   }, [comments, showLoading]);
 
-  useEffect(()=>{
+  useEffect(() => {
     getDetailAsync({
       id: query?.id
     })
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     getCommentsAsync({
       id: query?.id
     })
   }, [reloadComentsNum])
 
-  useEffect(()=>{
+  useEffect(() => {
     return () => {
       resetData({
         detail: {}
@@ -61,14 +77,20 @@ export default function House() {
     }
   }, [])
 
+  useEffect(() => {
+    hasOrderAsync({
+      id: query?.id
+    })
+  }, [])
+
   return (
     <div className="house-page">
       {/*banner  */}
-      <Banner banner={detail?.banner}/>
+      <Banner banner={detail?.banner} />
       {/*房屋信息 */}
-      <Info detail={detail?.info}/>
+      <Info detail={detail?.info} order={order} btnClick={handleBtnClick} />
       {/*评论列表 */}
-      <Lists lists={comments} showLoading={showLoading}/>
+      <Lists lists={comments} showLoading={showLoading} />
       {/*footer  */}
       <Footer />
     </div>
