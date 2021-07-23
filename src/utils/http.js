@@ -39,10 +39,10 @@ export default function Http({
                 resolve(res.data);
                 setResult && setResult(res.data);
             } else {
-                if (res.status === 1001) {
-                    window.location.href = '/login?from=' + window.location.pathname;
-                    localStorage.clear(); 
-                }
+                // if (res.status === 1001) {
+                //     window.location.href = '/login?from=' + window.location.pathname;
+                //     localStorage.clear(); 
+                // }
                 Toast.fail(res.errMsg);
                 reject(res.errMsg);
             }

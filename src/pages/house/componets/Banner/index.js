@@ -17,7 +17,7 @@ export default function Banner(props) {
       <div className="swiper-wrapper">
         {props?.banner?.map((item, index) => (
           <div className="swiper-slide" key={index}>
-            <img alt="banner" src={item} style={{width: '100%'}}/>
+            <img alt="banner" src={item.url} style={{width: '100%'}}/>
           </div>
         ))}
       </div>

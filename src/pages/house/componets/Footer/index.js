@@ -4,6 +4,14 @@ import { Modal } from '@/components';
 import { TextareaItem, Button, Toast } from 'antd-mobile'
 import { useStoreHook } from 'think-react-store';
 
+const query = {}
+
+const search = window.location.search.split('?').length == 2 ? window.location.search.split('?')[1].split('&') : []
+search.forEach(item => {
+  query[item.split("=")[0]] = item.split("=")[1]
+})
+
+
 export default function Footer() {
   const [show, setShow] = useState(false);
   const [commentsValue, setCommentsValue] = useState('')
@@ -22,7 +30,8 @@ export default function Footer() {
   const handleSubmit = () => {
     if (commentsValue) {
       addCommentsAsync({
-        comments: commentsValue
+        comment: commentsValue,
+        id: query?.id
       })
       handleClose()
     } else {

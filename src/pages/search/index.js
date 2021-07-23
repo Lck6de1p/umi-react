@@ -30,8 +30,8 @@ export default function (props) {
             ...pageConf,
             houseName,
             code: query?.code,
-            startTime: query?.startTime + '00:00:00',
-            endTime: query?.code + '23:59:59',
+            startTime: query?.startTime + ' 00:00:00',
+            endTime: query?.endTime + ' 23:59:59',
         },
         watch: [pageConf.pageNum, houseSubmitName]
     })
@@ -98,9 +98,9 @@ export default function (props) {
                 : <div className="result">
                     {houseLists.map((item, index) => (
                         <div className="item" key={index}>
-                            <img alt="img" className="item-img" src={require('../../assets/blank.png')} data-src={item.img} />
+                            <img alt="img" className="item-img" src={require('../../assets/blank.png')} data-src={item?.imgs[0]?.url} />
                             <div className="item-right">
-                                <div className="title">{item.title}</div>
+                                <div className="title">{item.name}</div>
                                 <div className="price">￥{item.price}</div>
                             </div>
                         </div>
