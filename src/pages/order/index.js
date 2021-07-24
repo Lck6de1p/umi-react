@@ -17,7 +17,7 @@ export default function (props) {
 
   const invokeHttp = async (pageNum) => {
     const result = await Http({
-      url: '/order/lists',
+      url: '/orders/lists',
       body: {
         ...page,
         pageNum,
@@ -29,7 +29,7 @@ export default function (props) {
   const fetchOrder = async (pageNum) => {
     const result = await invokeHttp(pageNum)
 
-    if (!isEmpty(result) && result.length === page.pageSize) {
+    if (!isEmpty(result) && result.length <= page.pageSize) {
       setOrders(result);
       setShowloading(true);
     } else {
@@ -53,7 +53,7 @@ export default function (props) {
   useObserverHook('#' + CommonEnum.LOADING_ID, async (entries) => {
     if (entries[0].isIntersecting) {
       const result = await invokeHttp(page.pageNum + 1)
-      if (!isEmpty(orders) && !isEmpty(result) && result.length === page.pageSize) {
+      if (!isEmpty(orders) && !isEmpty(result) && result.length <= page.pageSize) {
         setOrders([...orders, ...result])
         setPage({
           ...page,
@@ -69,7 +69,6 @@ export default function (props) {
   useEffect(() => {
     fetchOrder(1)
   }, [type])
-
   return (
     <ErrorBoundary>
       <div className="order-page">
